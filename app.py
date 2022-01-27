@@ -8,3 +8,9 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
 
+responses = []
+
+@app.get("/")
+def homepage():
+
+    return render_template("survey_start.html", survey=survey)
