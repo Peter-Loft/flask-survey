@@ -14,3 +14,11 @@ responses = []
 def homepage():
 
     return render_template("survey_start.html", survey=survey)
+
+@app.get("/questions/<int:questionnum>")
+def questionpage(questionnum):
+
+    question = survey.questions[questionnum]
+
+
+    return render_template("question.html", questionnum = 0)
