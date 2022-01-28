@@ -27,8 +27,7 @@ def questionpage(questionnum):
 
     if questionnum != len(session["responses"]):
         return redirect(f"/question/{len(session['responses'])}")
-    # if questionnum > len(survey.questions):
-    #     return render_template("question.html", question=question)
+
     else:
         question = survey.questions[questionnum]
         return render_template("question.html", question=question)
