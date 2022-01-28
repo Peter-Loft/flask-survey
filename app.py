@@ -18,14 +18,20 @@ def homepage():
 
 @app.get("/question/<int:questionnum>")
 def questionpage(questionnum):
-    """Route for questions after first one"""
+    """Route for questions after first one
+    If user tries to access wrong question, it will redirect back to
+    proper question or completion with warning flash"""
+
     if len(session["responses"]) == len(survey.questions):
+        flash("You've already finished the survey")
         return redirect("/completion")
 
     if questionnum >= len(survey.questions):
+        flash("You are trying to access wrong question")
         return redirect(f"/question/{len(session['responses'])}")
 
     if questionnum != len(session["responses"]):
+        flash("You are trying to access wrong question")
         return redirect(f"/question/{len(session['responses'])}")
 
     else:
