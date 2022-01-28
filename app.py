@@ -9,28 +9,39 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
 
-
 @app.get("/")
 def homepage():
     """Generates landing page"""
     session["responses"] = []
     return render_template("survey_start.html", survey=survey)
 
+
 @app.get("/question/<int:questionnum>")
 def questionpage(questionnum):
     """Route for questions after first one"""
-    question = survey.questions[questionnum]
+    if len(session["responses"]) == len(survey.questions):
+        return redirect("/completion")
 
+    if questionnum >= len(survey.questions):
+        return redirect(f"/question/{len(session['responses'])}")
 
-    return render_template("question.html", question=question)
+    if questionnum != len(session["responses"]):
+        return redirect(f"/question/{len(session['responses'])}")
+    # if questionnum > len(survey.questions):
+    #     return render_template("question.html", question=question)
+    else:
+        question = survey.questions[questionnum]
+        return render_template("question.html", question=question)
+
 
 @app.post("/begin")
 def first_question():
     """Route for first question"""
-    
+
     question = survey.questions[0]
 
     return render_template("question.html", question=question)
+
 
 @app.post("/answer")
 def answer():
@@ -43,6 +54,7 @@ def answer():
         return redirect(f"/question/{len(responses)}")
     else:
         return redirect("/completion")
+
 
 @app.get("/completion")
 def completion():
