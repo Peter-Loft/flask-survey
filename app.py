@@ -12,6 +12,7 @@ debug = DebugToolbarExtension(app)
 @app.get("/")
 def homepage():
     """Generates landing page"""
+    # CR might want to move the intialization of the responses list
     session["responses"] = []
     return render_template("survey_start.html", survey=survey)
 
@@ -21,6 +22,8 @@ def questionpage(questionnum):
     """Route for questions after first one
     If user tries to access wrong question, it will redirect back to
     proper question or completion with warning flash"""
+
+    # CR maybe differentiate the flash messages
 
     if len(session["responses"]) == len(survey.questions):
         flash("You've already finished the survey")
@@ -42,7 +45,7 @@ def questionpage(questionnum):
 @app.post("/begin")
 def first_question():
     """Route for first question"""
-
+    # CR maybe move session initialization here
     question = survey.questions[0]
 
     return render_template("question.html", question=question)
@@ -52,9 +55,11 @@ def first_question():
 def answer():
     """Saves answer user submitted and redirect to next question or 
     completed page"""
+
     responses = session["responses"]
     responses.append(request.form.get("answer"))
     session["responses"] = responses
+
     if len(responses) < len(survey.questions):
         return redirect(f"/question/{len(responses)}")
     else:

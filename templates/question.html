@@ -3,10 +3,10 @@
 
       <h2>{% for msg in get_flashed_messages() %}
         <p>{{ msg }}</p>
-      {% endfor %}</h2>
+          {% endfor %}
+      </h2>
   <h1>{{ question.question }}</h1>
     
-
   <form action="/answer" method="POST">
       {% for choice in question.choices %}
       <!-- you should have one item like this for every choice -->
